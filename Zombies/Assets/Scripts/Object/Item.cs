@@ -19,13 +19,13 @@ public class Item : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y + 2.5f, 0f);
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
+     void OnTriggerEnter(Collider collision)
+     {
         if (collision.gameObject.tag == "Player")
         {
             shooting.UpgradeWithItem();
             GameObject.Destroy(gameObject);
         }
-    }
+     }
 
 }

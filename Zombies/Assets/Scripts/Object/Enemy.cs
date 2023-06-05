@@ -3,23 +3,25 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] EnemyData enemyData;
     private EnemyInteractor interactor;
     private DamageInteractor damageInteractor;
     protected int hp { get; set; }
-    NavMeshAgent navMeshAgent;
+    protected NavMeshAgent navMeshAgent;
 
     protected virtual void Start()
     {
         interactor = Game.GetInteractor<EnemyInteractor>();
         damageInteractor = Game.GetInteractor<DamageInteractor>();
+        enemyData.GetData(this);
     }
 
-    public virtual void Init(int minHP, int maxHP)
+    public virtual void Init(int minHP, int maxHP, int minSpeed, int maxSpeed)
     {
         System.Random random = new System.Random();
         hp = random.Next(minHP, maxHP);
         navMeshAgent = GetComponent<NavMeshAgent>();
-        navMeshAgent.speed = random.Next(7,12);
+        navMeshAgent.speed = random.Next(minSpeed, maxSpeed);
     }
 
     public virtual void IncomingDamage(int damage)
@@ -30,7 +32,6 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            interactor.CheckSurvivor();
             Die();
         }
     }
@@ -39,6 +40,7 @@ public class Enemy : MonoBehaviour
     {
         Destroy(gameObject, 0.05f);
         interactor.UpdateScore();
+        interactor.ZoombieDied?.Invoke();
     }
 
     protected virtual void OnCollisionEnter(Collision collision)

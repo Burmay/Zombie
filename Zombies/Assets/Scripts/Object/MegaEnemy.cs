@@ -10,10 +10,9 @@ public class MegaEnemy : Enemy
         soundInteractor = Game.GetInteractor<SoundInteractor>();
     }
 
-    public override void Init(int minXP, int maxXP)
+    public override void Init(int minXP, int maxXP, int minSpeed, int maxSpeed)
     {
-        System.Random random = new System.Random();
-        base.hp = random.Next(minXP, maxXP);
+        base.Init(minXP, maxXP, minSpeed, maxSpeed);
     }
 
     public override void IncomingDamage(int damage)

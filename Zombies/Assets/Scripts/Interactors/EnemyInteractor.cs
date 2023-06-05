@@ -1,23 +1,24 @@
+using System;
 using UnityEngine;
 
 public class EnemyInteractor : Interactor
 {
     //Zombie generation and control
 
-    private int minHP = 25, maxHP = 50;
-    private int megaMinHP = 550, megaMaxHP = 1100;
+    public Action ZoombieDied;
 
     private const string ENEMY_PATH = "Prefabs/Enemy";
     private const string MEGA_ENEMY_PATH = "Prefabs/MegaEnemy";
-    private Enemy[] instance;
     private WaveInteractor waveInteractor;
     private UIInteractor uiInteractor;
+    private int zoombieCount;
 
     public override void OnCreate()
     {
         waveInteractor = Game.GetInteractor<WaveInteractor>();
-        uiInteractor = Game.GetInteractor<UIInteractor>(); 
-        instance = new Enemy[1000];
+        uiInteractor = Game.GetInteractor<UIInteractor>();
+        zoombieCount = 0;
+        ZoombieDied += this.SubtractZombie;
     }
 
     public void SpawnEnemy(Transform[] spawnPoint, int countPoint, int[] countEnemyPerWave)
@@ -28,8 +29,8 @@ public class EnemyInteractor : Interactor
 
         for (int i = 0; i < countEnemyPerWave[wave]; i++)
         {
-            instance[i] = Instantiate(prefab, spawnPoint[random.Next(countPoint)].position, Quaternion.identity);
-            instance[i].Init(minHP, maxHP);
+            var instance = Instantiate(prefab, spawnPoint[random.Next(countPoint)].position, Quaternion.identity);
+            zoombieCount++;
         }
     }
 
@@ -43,17 +44,8 @@ public class EnemyInteractor : Interactor
         {
             int rand = random.Next(countPoint);
             Vector3 megapos = new Vector3(spawnPoint[rand].position.x, spawnPoint[rand].position.y + 5, spawnPoint[rand].position.z);
-            instance[wave + i] = Instantiate(prefab, megapos, Quaternion.identity);
-            instance[wave + i].Init(megaMinHP, megaMaxHP);
-        }
-    }
-
-    public void CheckSurvivor()
-    {
-        GameObject[] survivors = GameObject.FindGameObjectsWithTag("Enemy");
-        if(survivors.Length <= 1)
-        {
-            waveInteractor.EndWave();
+            var instance = Instantiate(prefab, megapos, Quaternion.identity);
+            zoombieCount++;
         }
     }
 
@@ -61,4 +53,13 @@ public class EnemyInteractor : Interactor
     {
         uiInteractor.UpdateScore();
     }    
+
+    public void SubtractZombie()
+    {
+        zoombieCount--;
+        if(zoombieCount == 0)
+        {
+            waveInteractor.EndWave();
+        }
+    }
 }

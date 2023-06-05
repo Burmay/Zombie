@@ -7,28 +7,10 @@ public class PlayerInteractor : Interactor
     private UIInteractor uiInteractor;
     
 
-    public int Ammo { get; private set; }
-    public int Clip { get; private set; }
-    public int Xp { get; private set; }
-
     public override void OnCreate()
     {
         uiInteractor = Game.GetInteractor<UIInteractor>();
         SpawnPlayer();
-        SetAmmunition();
-    }
-
-    private void SetAmmunition()
-    {
-        Ammo = 100000;
-    }
-
-    public void SpendAmmo()
-    {
-        if (Ammo > 0)
-        {
-            Ammo--;
-        }
     }
 
     private void SpawnPlayer()

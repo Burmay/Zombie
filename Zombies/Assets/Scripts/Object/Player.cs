@@ -6,9 +6,10 @@ public class Player : MonoBehaviour
     ShootingInteractor shooting;
     Ray ray; RaycastHit hit; Vector3 lookPos; Vector3 lookDir;
     Rigidbody rigidbody;
-    [SerializeField] private float speed, turnSpeed;
+    private float speed, ammo;
     private Vector3 input;
     [SerializeField] private Transform firePoint;
+    [SerializeField] private PlayerData playerData;
     public bool die;
 
     CharacterController characterController;
@@ -21,6 +22,13 @@ public class Player : MonoBehaviour
         shooting = Game.GetInteractor<ShootingInteractor>();
         rigidbody = GetComponent<Rigidbody>();
         shooting.SetFirePoint(firePoint);
+        playerData.GetData(this);
+    }
+
+    public void SetData(int speed, int ammo)
+    {
+        this.speed = speed;
+        this.ammo = ammo;
     }
 
     private void Update()
@@ -49,26 +57,28 @@ public class Player : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            if (interactor.Ammo > 0)
+            if (ammo > 0)
             {
-                shooting.Shoot();
+                if (shooting.Shoot())
+                {
+                    SpendAmmo();
+                }
             }
         }
     }
 
+    public void SpendAmmo()
+    {
+        if (ammo > 0)
+        {
+            ammo--;
+        }
+    }
+
+
     private void GatherInput()
     {
         input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).ToIso();
-    }
-
-    private void SetDirectionMove()
-    {
-        if(input != Vector3.zero)
-        {
-            var relative = (transform.position + input.ToIso()) - transform.position;
-            var rot = Quaternion.LookRotation(relative, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rot, Time.deltaTime * turnSpeed);
-        }
     }
 
     private void Move()

@@ -31,19 +31,22 @@ public class ShootingInteractor : Interactor
         this.firePoint = firePoint;
     }
 
-    public void Shoot()
+    public bool Shoot()
     {
         if (shootTimer == 0)
         {
-            interactor.SpendAmmo();
             GameObject instance = Instantiate(bulletPrefab, firePoint.position, interactor.GetTransformInstance().rotation);
             Vector3 dirShooting = interactor.GetTransformInstance().rotation * Vector3.forward;
             var bullet = instance.GetComponent<Bullet>();
             bullet.Initialize(damage, speed, energy, dirShooting);
             soundInteractor.PlayShot();
             shootTimer = rateOfShooting;
+            return true;
         }
+        else return false;
     }
+
+    private void Explosion() { } // not realised
 
     public void UpgradePerWave()
     {
