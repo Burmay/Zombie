@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   speed: 10
-  ammo: 1000
+  ammo: 10000
