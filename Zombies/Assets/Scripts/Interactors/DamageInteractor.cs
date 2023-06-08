@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class DamageInteractor : Interactor
 {
@@ -8,9 +9,20 @@ public class DamageInteractor : Interactor
     GameObject recipient;
     PlayerInteractor playerInt;
 
+    private float explosionRadius;
+    private WeaponsData weaponData;
+    private const string DATA_PATH = "Data/WeaponsData";
+
     public override void OnStart()
     {
         playerInt = Game.GetInteractor<PlayerInteractor>();
+        weaponData = Resources.Load<WeaponsData>(DATA_PATH);
+        weaponData.GetData(this);
+    }
+
+    public void SetData(float expR)
+    {
+        explosionRadius = expR;
     }
 
     // 
@@ -18,6 +30,8 @@ public class DamageInteractor : Interactor
     {
         if(collision.gameObject != null)
         {
+            if(explosionRadius != 0) { Explosion(collision.transform, collision, damage, energy, rotation); }
+
             recipient = collision.gameObject;
             if (recipient.tag == "Enemy")
             {
@@ -25,12 +39,25 @@ public class DamageInteractor : Interactor
             }
             else if (recipient.tag == "Player")
             {
-                // Ricochet, not rallied
+                // Ricochet, not rallised
                 HitPlayer(collision, damage);
             }
             else
             {
                 return;
+            }
+        }
+    }
+
+    // Explosion Effect not realised! 
+    private void Explosion(Transform bulletTransform, Collision collision, int damage, int energy, Quaternion rotation)
+    {
+        Collider[] colliders = Physics.OverlapSphere(bulletTransform.position, explosionRadius);
+        foreach (Collider collider in colliders)
+        {
+            if (collider.tag == "Enemy")
+            {
+                 ExpHitEnemy(collider, damage, energy, rotation);
             }
         }
     }
@@ -41,13 +68,20 @@ public class DamageInteractor : Interactor
         Enemy enemy = recipient.GetComponent<Enemy>();
         enemy.IncomingDamage(damage);
 
-        //ContactPoint contactPoint = collision.GetContact(0);
-        //Vector3 backVector = contactPoint.normal;
-
         var backVector = rotation * Vector3.forward;
 
         collision.rigidbody.AddForce(backVector * energy);
     }
+
+    private void ExpHitEnemy(Collider collider, int damage, int energy, Quaternion rotation)
+    {
+        Enemy enemy = collider.GetComponent<Enemy>();
+        enemy.IncomingDamage(damage);
+
+        var backVector = rotation * Vector3.forward;
+    }
+
+
     private void HitPlayer(Collision collision, int damage)
     {
         Debug.Log("Not realised");

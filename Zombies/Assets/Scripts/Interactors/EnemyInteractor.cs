@@ -49,17 +49,23 @@ public class EnemyInteractor : Interactor
         }
     }
 
-    public void UpdateScore()
+     void UpdateScore()
     {
         uiInteractor.UpdateScore();
     }    
 
-    public void SubtractZombie()
+     void SubtractZombie()
     {
+        UpdateScore();
         zoombieCount--;
         if(zoombieCount == 0)
         {
             waveInteractor.EndWave();
         }
+    }
+
+    private void OnDestroy()
+    {
+        ZoombieDied -= this.SubtractZombie;
     }
 }

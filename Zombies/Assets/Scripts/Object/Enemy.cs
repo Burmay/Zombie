@@ -39,7 +39,6 @@ public class Enemy : MonoBehaviour
     protected virtual void Die()
     {
         Destroy(gameObject, 0.05f);
-        interactor.UpdateScore();
         interactor.ZoombieDied?.Invoke();
     }
 

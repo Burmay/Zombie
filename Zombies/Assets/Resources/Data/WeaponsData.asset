@@ -9,8 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7e9bc5d58576a04593a60f5ea7c3f1d, type: 3}
-  m_Name: PlayerData
+  m_Script: {fileID: 11500000, guid: a481678c8fee2094d88e07bc0035b66d, type: 3}
+  m_Name: WeaponsData
   m_EditorClassIdentifier: 
-  speed: 10
-  ammo: 10000
+  rateOfShooting: 0.47
+  damage: 50
+  energy: 10000
+  speedBullet: 50
+  improvementRate: 0.0666
+  explosionRadius: 0

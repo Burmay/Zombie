@@ -3169,6 +3169,7 @@ GameObject:
   - component: {fileID: 1092175235}
   - component: {fileID: 1092175234}
   - component: {fileID: 1092175233}
+  - component: {fileID: 1092175236}
   m_Layer: 0
   m_Name: Settings
   m_TagString: Untagged
@@ -3217,6 +3218,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1092175236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092175232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1792597a5237b364dae10ef810031359, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponsData: {fileID: 11400000, guid: ba56e23a4dd11a84fb6825a46e738d89, type: 2}
 --- !u!1001 &1117832256
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5829,7 +5843,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh24300
+  m_Name: pb_Mesh24316
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
